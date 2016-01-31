@@ -46,13 +46,21 @@ class Structure(object):
         object.__getattr__(self, attr, rval)
         return
 
-
+    def set_fld_offset(self,
+            field_idx, new_offset = None
+        ):
+        pass
+    
+    def set_fld_size(self,
+            field_idx, new_size = None
+        ):
+        pass
 #
 #
 class Padding(Structure):
-    def __init__(self, _bytes = None):
+    def __init__(self, _bytes = None, _initial_size = 0):
         self.fields = [
-            ['padding', 0, 0, None]
+            ['padding', 0, _initial_size, None]
         ]
         Structure.__init__(self)
 
