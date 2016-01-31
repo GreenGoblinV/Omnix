@@ -1,7 +1,7 @@
 
 # COFF file header
 class COFFFileHeader(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             # Name, Offset, Size
             ['Machine', 0, 2, None],
@@ -16,7 +16,7 @@ class COFFFileHeader(Structure):
 
 
 class StandardCOFFFields(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['Magic', 0, 2, None],
             ['MajorLinkerVersion', 2, 1, None],
@@ -32,7 +32,7 @@ class StandardCOFFFields(Structure):
 
 
 class MicrosoftSpecificFields(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [ 
             ['ImageBase', 28, 4, None],
             ['SectionAlignment', 32, 4, None],
@@ -61,7 +61,7 @@ class MicrosoftSpecificFields(Structure):
 
 # Optional Header
 class OptionalHeader(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['StandardCOFFFields', 0, 28, StandardCOFFFields],
             ['MicrosoftSpecificFields', 28, 68, \
@@ -73,7 +73,7 @@ class OptionalHeader(Structure):
 
 # PE Section Header
 class PESectionHeader(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['Name', 0, 8, None],
             ['VirtualSize', 8, 4, None],
@@ -92,7 +92,7 @@ class PESectionHeader(Structure):
 
 #
 class ExportDirectoryTable(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['ExportFlags', 0, 4, None],
             ['TimeDateStamp', 4, 4, None],
@@ -110,7 +110,7 @@ class ExportDirectoryTable(Structure):
 
 
 class ImportDirectoryTable(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['ImportLookupTableRBA'],
             ['TimeDateStamp'],
@@ -123,7 +123,7 @@ class ImportDirectoryTable(Structure):
 
 #
 class ImportLookupTable(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['OrdinalNameFlag'],
             ['OrdinalNumber'],
@@ -134,7 +134,7 @@ class ImportLookupTable(Structure):
     
 #
 class ImportHeader(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['Sig1', 0, 2, None],
             ['Sig2', 2, 2, None],
@@ -152,7 +152,7 @@ class ImportHeader(Structure):
 
 #
 class ImportPages(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             [],
         ]
@@ -163,7 +163,7 @@ class ImportPages(Structure):
 
 #
 class LoadConfigurationStructure(Structure):
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['Characteristics'],
             ['TimeDateStamp'],
@@ -191,14 +191,11 @@ class LoadConfigurationStructure(Structure):
 
 #
 class ProtableExecutable(object):
-    def __init__(self):
-
-    
     magic_doc_chars = b'MZ'
     magic_pe_chars = b'PE\x00\x00'
     pe_header_offset_loc = b'\x3c'
     
-    def __init__(self, filename):
+    def __init__(self, _bytes = None):
         self.fields = [
             ['MSDOSSection', 0, 0, MSDOSSection],
             ['PEHeader', None, 0, PEHeader],

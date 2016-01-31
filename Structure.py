@@ -1,3 +1,4 @@
+from ctypes import *
 
 """
 Class: Structure
@@ -10,7 +11,7 @@ Class: Structure
 class Structure(object):
     fields = [['name', 'offset', 'size', 'type']]
     field_idx_cache = {}
-    def __init__(self):
+    def __init__(self, _bytes = None):
         self.bytes = []
         for i in range(len(self.fields)):
             if self.fields[3] is None:
@@ -44,3 +45,16 @@ class Structure(object):
                 return
         object.__getattr__(self, attr, rval)
         return
+
+
+#
+#
+class Padding(Structure):
+    def __init__(self, _bytes = None):
+        self.fields = [
+            ['padding', 0, 0, None]
+        ]
+        Structure.__init__(self)
+
+#
+#
