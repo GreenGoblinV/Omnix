@@ -1,3 +1,14 @@
+import ctypes
+
+Elf32_Addr = ctypes.c_uint32
+Elf32_Half = ctypes.c_uint16
+ELF32_Off = ctypes.c_uint32
+Elf32_Sword = ctypes.c_int32
+Elf32_Word = ctypes.c_uint32
+unsigned_char = ctypes.c_uint8
+
+
+
 class E_Ident(Structure):
     def __init__(self, _bytes = None):
         self.fields = [
@@ -52,19 +63,106 @@ class ProgramHeader(object):
         
 
 class SectionHeader(object):
-    fields = [
-        [],
-    ]
+
     def __init__(self, _bytes = None):
-        self.sh_name = None
-        self.sh_type = None
-        self.sh_flags = None
-        self.sh_addr = None
-        self.sh_offset = None
-        self.sh_size = None
-        self.sh_link = None
-        self.sh_info = None
-        self.sh_addralign = None
-        sh_entsize = None
+        self.fields = [
+            #This member specifies the name of the section.
+            ['sh_name', 0x00, 4, None],
+            # Categorizes the section's contents/semantics
+            ['sh_type', 0x04, 4, None],
+            # Describe miscellaneous attributes.
+            ['sh_flags', 0x08, 4, None],
+            # Address where section's 1st byte should reside
+            ['sh_addr', 0x0C, 4, None],
+            # Offset from beginning of file to 1st byte in the section.
+            ['sh_offset', 0x10, 4, None],
+            # The section's size in bytes
+            ['sh_size', 0x14, 4, None],
+            # Holds a section header table index link.
+            ['sh_link', 0x18, 4, None],
+            # Holds extra info, interpretation depends on the section type.
+            ['sh_info', 0x1C, 4, None],
+            # Alignment constraints
+            ['sh_addralign', 0x20, 4, None],
+            # Size of fixed sized entries, 0 if variable sized entries.
+            ['sh_entsize', 0x24, 4, None]
+        ]
+        Structure.__init__(self)
+#
 
 
+
+#
+class StringTable(Structure):
+    def __init__(self):
+        self.fields = [
+            ['st_strings', 0x00, 0, None],
+        ]
+        Structure.__init__(self)
+#
+
+
+#
+class SymbolTableEntry(Structure):
+    def __init__(self):
+        self.fields = [
+            ['st_name', 0x00, 4, Elf32_Word],
+            ['st_value', 0x04, 4, Elf32_Addr],
+            ['st_size', 0x08, 4, Elf32_Word],
+            ['st_info', 0x0C, 1, unsigned_char],
+            ['st_other', 0x0D, 1, unsigned_char],
+            ['st_shndx', 0x0E, 2, Elf32_Half]
+        ]
+        Structure.__init__(self)
+#
+
+class Elf32_Rel(Structure):
+    def __init__(self):
+        self.fields = [
+            ['r_offset', 0x00, 4, Elf32_Addr],
+            ['r_info', 0x04, 4, Elf32_Word]
+        ]
+        Structure.__init__(self)
+#
+
+#
+class Elf32_Rela(Structure):
+    def __init__(self):
+        self.fields = [
+            ['r_offset', 0x00, 4, Elf32_Addr],
+            ['r_info', 0x04, 4, Elf32_Word]
+            ['r_addend', 0x08, 4, Elf32_Sword]
+        ]
+        Structure.__init__(self)
+#
+
+
+#
+class ProgramHeaderTable(Structure):
+    pass
+#
+
+
+#
+class SectionHeaderTable(Structure):
+    pass
+#
+
+
+#
+class ELFRelocatable(Structure):
+    pass
+#
+
+    
+
+#
+class ELFExecutable(Structure):
+    pass
+#
+
+
+#
+class ELFSharedObject(Structure):
+    pass
+#
